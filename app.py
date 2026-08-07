@@ -38,3 +38,13 @@ app.config["PERMANENT_SESSION_LIFETIME"] = timedelta(days=14)
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 DB_FILE = os.path.join(BASE_DIR, "database.db")
+
+def login_required(view_func):
+    """Blocks a route unless someone is logged in. Redirects to a
+    'you need a link' page instead of showing an error."""
+    @wraps(view_func)
+    def wrapped(*args, **kwargs):
+        if "user_id" not in session:
+            return redirect(url_for("no_access"))
+        return view_func(*args, **kwargs)
+    return wrapped
