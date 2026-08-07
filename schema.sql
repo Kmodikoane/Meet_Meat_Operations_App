@@ -17,6 +17,6 @@ CREATE TABLE IF NOT EXISTS users (
 -- 2. Seed the database with the first 2 users
 INSERT OR IGNORE INTO users (username, email, first_name, last_name, role, token) VALUES ('KModikoane', 'motsomodikoane@gmail.com', 'Kgomotso', 'Modikoane', 'admin', 'TKN_placeholder1');
 
-INSERT INTO users (username, email, first_name, last_name, role, token) 
-VALUES ('Kgothatso@MeetMeat', 'kgomotso.it.modikoane@gmail.com', 'Kgothatso', 'MeetMeat','Executive', 'exec','TKN_placeholder1')
+INSERT OR IGNORE INTO users (username, email, first_name, last_name, role, token) 
+VALUES ('Kgothatso@MeetMeat', 'kgomotso.it.modikoane@gmail.com', 'Kgothatso', 'MeetMeat', 'exec','TKN_placeholder2')
 ;
