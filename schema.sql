@@ -6,4 +6,4 @@ CREATE TABLE IF NOT EXISTS users (
 );
 
 -- 2. Seed the database with the first 2 users
-INSERT OR IGNORE INTO users (username, email) VALUES ('kgomotso', 'motsomodikoane@gmail.com');
+INSERT OR IGNORE INTO users (username, email) VALUES ('Kgomotso', 'motsomodikoane@gmail.com');
