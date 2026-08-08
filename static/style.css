@@ -1,0 +1,144 @@
+/* style.css
+   Brand direction taken from the Vilakazi Street launch poster (bold red
+   block type on white/black) and the Bryanston opening card (black,
+   gold accent, premium feel). Red+white carries the "pop," black grounds
+   it, gold is used sparingly for the more official/admin-facing pages. */
+
+@import url('https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700&display=swap');
+
+:root {
+    --mm-red: #D0202B;
+    --mm-red-deep: #A3121B;
+    --mm-black: #121212;
+    --mm-white: #FFFFFF;
+    --mm-gray: #F4F3F1;
+    --mm-line: #E3E1DC;
+    --mm-gold: #C9A227;
+}
+
+* { box-sizing: border-box; }
+
+body {
+    font-family: 'Inter', sans-serif;
+    background: var(--mm-white);
+    color: var(--mm-black);
+    margin: 0;
+    padding: 0;
+}
+
+.mm-page {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* The wordmark -- bold condensed type, echoing the poster's block letters */
+.mm-wordmark {
+    font-family: 'Anton', sans-serif;
+    letter-spacing: 2px;
+    font-size: 22px;
+    padding: 22px 0 14px 0;
+    color: var(--mm-black);
+}
+.mm-wordmark span { color: var(--mm-red); }
+
+.mm-card {
+    background: var(--mm-white);
+    border: 1px solid var(--mm-line);
+    border-top: 6px solid var(--mm-red);
+    border-radius: 4px;
+    max-width: 460px;
+    width: 90%;
+    margin-top: 40px;
+    padding: 36px 32px;
+    text-align: center;
+}
+
+.mm-card--admin {
+    border-top-color: var(--mm-gold);
+}
+
+.mm-headline {
+    font-family: 'Anton', sans-serif;
+    font-size: 30px;
+    letter-spacing: 1px;
+    color: var(--mm-red);
+    margin: 0 0 12px 0;
+}
+
+.mm-body-text {
+    font-size: 15px;
+    color: #4A4A4A;
+    line-height: 1.5;
+    margin: 0;
+}
+
+.mm-role-tag {
+    display: inline-block;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 3px;
+    background: var(--mm-black);
+    color: var(--mm-white);
+    margin-top: 8px;
+}
+.mm-role-tag--admin { background: var(--mm-gold); color: var(--mm-black); }
+
+.mm-btn {
+    display: inline-block;
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    text-decoration: none;
+    padding: 12px 22px;
+    border-radius: 4px;
+    margin: 6px 6px 0 6px;
+    transition: opacity 0.15s;
+}
+.mm-btn:hover { opacity: 0.85; }
+.mm-btn--red { background: var(--mm-red); color: var(--mm-white); }
+.mm-btn--outline { background: transparent; color: var(--mm-black); border: 1.5px solid var(--mm-black); }
+
+.mm-panel-admin {
+    margin-top: 22px;
+    padding: 18px;
+    background: var(--mm-black);
+    border-radius: 4px;
+    text-align: left;
+}
+.mm-panel-admin h3 {
+    font-family: 'Anton', sans-serif;
+    color: var(--mm-gold);
+    letter-spacing: 1px;
+    font-size: 16px;
+    margin: 0 0 12px 0;
+}
+.mm-panel-admin button {
+    background: transparent;
+    border: 1px solid var(--mm-gold);
+    color: var(--mm-gold);
+    padding: 8px 14px;
+    border-radius: 3px;
+    font-size: 13px;
+    margin: 4px 6px 0 0;
+    cursor: pointer;
+}
+.mm-panel-admin button:hover { background: var(--mm-gold); color: var(--mm-black); }
+
+.mm-footnote {
+    font-size: 12px;
+    color: #9A9A9A;
+    margin-top: 10px;
+}
+
+.mm-divider {
+    width: 100%;
+    max-width: 460px;
+    border: none;
+    border-top: 1px solid var(--mm-line);
+    margin: 20px 0;
+}

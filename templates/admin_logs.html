@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin Logs</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="mm-page">
+        <div class="mm-wordmark">MEAT <span>MEET</span></div>
+        <div class="mm-card mm-card--admin" style="text-align:left;">
+            <h1 class="mm-headline" style="text-align:center;">ADMIN LOGS</h1>
+            <p class="mm-body-text" style="text-align:center;">Viewed by {{ display_name }}</p>
+            <hr class="mm-divider">
+            <p class="mm-footnote" style="text-align:center;">
+                Real manual-change log entries appear here in a later module.
+            </p>
+        </div>
+        <div style="margin-top: 18px;">
+            <a class="mm-btn mm-btn--outline" href="{{ url_for('dashboard') }}">Back to Dashboard</a>
+        </div>
+    </div>
+</body>
+</html>
