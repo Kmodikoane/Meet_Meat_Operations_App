@@ -2,7 +2,7 @@
 app.py
 
 The web app itself. Handles:
-  - /login/<token>  : the link an executive taps. Validates the token,
+  - /login/<token>   : the link an executive taps. Validates the token,
                        rotates it (kills the link they just used),
                        and starts a secure session.
   - /dashboard       : the landing page after login, gated by role.
@@ -36,6 +36,7 @@ app.secret_key = os.environ.get("SECRET_KEY", "dev-only-change-this-before-deplo
 app.config["SESSION_COOKIE_HTTPONLY"] = True
 app.config["SESSION_COOKIE_SECURE"] = False  # flip to True once running on https://
 app.config["PERMANENT_SESSION_LIFETIME"] = timedelta(days=14)
+
 
 def login_required(view_func):
     """Blocks a route unless someone is logged in. Redirects to a
@@ -71,11 +72,11 @@ def login(token):
         return render_template("login_failed.html"), 401
 
     # Rotate the token immediately: the link they just clicked is now dead.
-    rotate_token(user["id"])
+    rotate_token(user["user_id"])
 
     # Start the session
     session.permanent = True
-    session["user_id"] = user["id"]
+    session["user_id"] = user["user_id"]
     session["role"] = user["role"]
     session["display_name"] = f"{user['first_name']} {user['last_name']}"
 
@@ -125,7 +126,7 @@ def dashboard():
 
 @app.route("/admin-logs")
 @login_required
-@role_required("admin", "exec")  # both roles can VIEW the log
+@role_required("admin", "exec")  # both roles can VIEW the log; @login_required MUST come first
 def admin_logs():
     # Real log data comes in the next module -- this proves the route
     # and the role gate work first.
