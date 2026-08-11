@@ -66,52 +66,21 @@ def add_user(username, email, first_name, last_name, role, phone_number=None):
     finally:
         connection.close()
 
-
-
-def add_user(username, email, first_name, last_name, role):
-    """Example Python function to insert a new user."""
-
-    clean_first_name = first_name.strip().title()  # Converts "kgomo" or "KGOMO" to "Kgomo"
-    clean_last_name = last_name.strip().title()    # Converts "smith" to "Smith"
-
-    token = secrets.token_urlsafe(32)
-
-    connection = sqlite3.connect(DB_FILE)
-    cursor = connection.cursor()
-
-    try:
-        cursor.execute(
-            "INSERT INTO users (username, email, first_name, last_name, role, token) VALUES (?, ?, ?, ?, ?, ?)", 
-            (username, email, clean_first_name, clean_last_name, role, token),
-        )
-        connection.commit()
-        print(f"User '{username}' added successfully.")
-        print(f"  Login link token: {token}")
-        print(f"  (send them: https://yoursite.com/login/{token})")
-        return token
-    except sqlite3.IntegrityError as e:
-        print(f"Error: could not add '{username}' -- {e}")
-        return None
-    finally:
-        connection.close()
-
-def get_user_by_token(token):
-    """
-    Looks up a user by their current token. Used by the login route.
-    Returns None if the token doesn't match anyone -- either it was
-    never valid, or it's an old token that's already been rotated out.
-    """
+ef get_user_by_email(email):
+    """Looks up a user by email (case-insensitive). Used by the
+    'request a new link' self-service flow."""
     connection = sqlite3.connect(DB_FILE)
     cursor = connection.cursor()
     cursor.execute(
-        "SELECT user_id, username, email, first_name, last_name, role, token FROM users WHERE token = ?",
-        (token,),
+        "SELECT id, username, email, phone_number, first_name, last_name, role, token "
+        "FROM users WHERE LOWER(email) = LOWER(?)",
+        (email,),
     )
     row = cursor.fetchone()
     connection.close()
     if row is None:
         return None
-    keys = ("user_id", "username", "email", "first_name", "last_name", "role", "token")
+    keys = ("id", "username", "email", "phone_number", "first_name", "last_name", "role", "token")
     return dict(zip(keys, row))
 
 
