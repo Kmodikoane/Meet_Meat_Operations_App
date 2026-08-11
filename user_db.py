@@ -1,11 +1,24 @@
 import sqlite3
 import os
 import secrets
+from email.message import EmailMessage
 
 # This forces Python to look in the script's actual directory
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 DB_FILE = os.path.join(BASE_DIR, "database.db")
 SCHEMA_FILE = os.path.join(BASE_DIR, "schema.sql")
+
+# --- Email delivery configuration ---------------------------------------
+# Read from environment variables, never hardcoded -- these are secrets.
+# On Windows (PowerShell), set them per session with:
+#   $env:MEATMEET_EMAIL = "youraddress@gmail.com"
+#   $env:MEATMEET_EMAIL_APP_PASSWORD = "your16charapppassword"
+# If they're not set, send_login_email() falls back to just printing the
+# link to the console -- so you can keep testing everything else even
+# before real email is wired up.
+EMAIL_ADDRESS = os.environ.get("MEATMEET_EMAIL")
+EMAIL_APP_PASSWORD = os.environ.get("MEATMEET_EMAIL_APP_PASSWORD")
+SITE_BASE_URL = os.environ.get("MEATMEET_BASE_URL", "http://127.0.0.1:5000")
 
 def init_db():
     """Builds the database using the schema.sql blueprint."""
