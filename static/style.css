@@ -142,3 +142,123 @@ body {
     border-top: 1px solid var(--mm-line);
     margin: 20px 0;
 }
+
+/* ===== App shell (sidebar + content) — added for the multi-module layout ===== */
+
+.mm-shell {
+    display: flex;
+    min-height: 100vh;
+}
+
+.mm-sidebar {
+    width: 230px;
+    flex-shrink: 0;
+    background: var(--mm-white);
+    border-right: 1px solid var(--mm-line);
+    display: flex;
+    flex-direction: column;
+    padding: 24px 0;
+}
+
+.mm-sidebar-logo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0 16px 20px 16px;
+    border-bottom: 1px solid var(--mm-line);
+    margin-bottom: 16px;
+}
+.mm-sidebar-logo img { width: 64px; height: 64px; object-fit: contain; }
+
+.mm-nav {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    flex-grow: 1;
+}
+.mm-nav-item a {
+    display: block;
+    padding: 12px 22px;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--mm-black);
+    text-decoration: none;
+    border-left: 4px solid transparent;
+}
+.mm-nav-item a:hover { background: var(--mm-gray); }
+.mm-nav-item.active a {
+    border-left-color: var(--mm-red);
+    background: var(--mm-gray);
+    color: var(--mm-red);
+}
+
+.mm-sidebar-footer {
+    padding: 14px 22px 0 22px;
+    border-top: 1px solid var(--mm-line);
+    margin-top: 12px;
+}
+.mm-sidebar-footer a {
+    display: block;
+    font-size: 12px;
+    color: var(--mm-black);
+    text-decoration: none;
+    margin-bottom: 8px;
+}
+.mm-sidebar-footer a:hover { color: var(--mm-red); }
+.mm-sidebar-footer .mm-user {
+    font-size: 12px;
+    color: #9A9A9A;
+    margin-bottom: 10px;
+}
+
+.mm-content {
+    flex-grow: 1;
+    padding: 32px 40px;
+}
+
+.mm-content-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 20px;
+}
+
+.mm-clock {
+    font-family: 'Anton', sans-serif;
+    font-size: 20px;
+    color: var(--mm-red);
+    letter-spacing: 1px;
+}
+
+.mm-metric-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 14px;
+    margin-top: 8px;
+}
+.mm-metric {
+    border: 1px solid var(--mm-line);
+    border-top: 4px solid var(--mm-red);
+    border-radius: 4px;
+    padding: 16px;
+}
+.mm-metric-label {
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--mm-black);
+    opacity: 0.6;
+}
+.mm-metric-value {
+    font-family: 'Anton', sans-serif;
+    font-size: 26px;
+    color: var(--mm-black);
+    margin-top: 4px;
+}
+
+.mm-view-only-note {
+    font-size: 13px;
+    color: #9A9A9A;
+    margin-top: 16px;
+    font-style: italic;
+}
