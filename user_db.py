@@ -138,7 +138,26 @@ def send_login_email(to_email, first_name, token):
         print(f"Failed to send email to {to_email}: {e}")
         return False
 
+def request_new_link(email):
+    """
+    The self-service 'I need to log back in' flow. Looks up the email,
+    and if found, rotates their token and emails them the fresh link.
 
+    Deliberately returns True in EVERY case (found or not) -- the caller
+    (the Flask route) should always show the same generic message to the
+    person using the form. If we said 'that email isn't registered' for
+    unknown emails, it would let someone probe which emails exist in the
+    system, which is information they shouldn't be able to fish for.
+    """
+    user = get_user_by_email(email)
+    if user is None:
+        print(f"[request_new_link] No user found for {email} -- not revealing this to the caller.")
+        return True
+
+    new_token = rotate_token(user["id"])
+    send_login_email(user["email"], user["first_name"], new_token)
+    return True
+    
 def check_users():
     connection = sqlite3.connect(DB_FILE)
     cursor = connection.cursor()
