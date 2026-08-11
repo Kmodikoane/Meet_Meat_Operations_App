@@ -2,7 +2,7 @@
 app.py
 
 The web app itself. Handles:
-  - /login/<token>   : the link an executive taps. Validates the token,
+  - /login/<token>  : the link an executive taps. Validates the token,
                        rotates it (kills the link they just used),
                        and starts a secure session.
   - /dashboard       : the landing page after login, gated by role.
@@ -43,7 +43,7 @@ def login_required(view_func):
     'you need a link' page instead of showing an error."""
     @wraps(view_func)
     def wrapped(*args, **kwargs):
-        if "user_id" not in session or not session.get("user_id"):
+        if "user_id" not in session:
             return redirect(url_for("no_access"))
         return view_func(*args, **kwargs)
     return wrapped
@@ -72,11 +72,11 @@ def login(token):
         return render_template("login_failed.html"), 401
 
     # Rotate the token immediately: the link they just clicked is now dead.
-    rotate_token(user["user_id"])
+    rotate_token(user["id"])
 
     # Start the session
     session.permanent = True
-    session["user_id"] = user["user_id"]
+    session["user_id"] = user["id"]
     session["role"] = user["role"]
     session["display_name"] = f"{user['first_name']} {user['last_name']}"
 
@@ -93,6 +93,43 @@ def no_access():
 def dashboard():
     return render_template(
         "dashboard.html",
+        active_page="today",
+        display_name=session["display_name"],
+        role=session["role"],
+    )
+
+
+@app.route("/stock")
+@login_required
+def stock():
+    # Both roles can VIEW this page -- the template itself hides the
+    # admin action buttons for non-admins. Real update actions (once
+    # built) will need their own @role_required("admin") routes.
+    return render_template(
+        "stock.html",
+        active_page="stock",
+        display_name=session["display_name"],
+        role=session["role"],
+    )
+
+
+@app.route("/suppliers")
+@login_required
+def suppliers():
+    return render_template(
+        "suppliers.html",
+        active_page="suppliers",
+        display_name=session["display_name"],
+        role=session["role"],
+    )
+
+
+@app.route("/performance")
+@login_required
+def performance():
+    return render_template(
+        "performance.html",
+        active_page="performance",
         display_name=session["display_name"],
         role=session["role"],
     )
@@ -100,11 +137,16 @@ def dashboard():
 
 @app.route("/admin-logs")
 @login_required
-@role_required("admin", "exec")  # both roles can VIEW the log; @login_required MUST come first
+@role_required("admin", "exec")  # both roles can VIEW the log
 def admin_logs():
     # Real log data comes in the next module -- this proves the route
     # and the role gate work first.
-    return render_template("admin_logs.html", display_name=session["display_name"])
+    return render_template(
+        "admin_logs.html",
+        active_page="admin_logs",
+        display_name=session["display_name"],
+        role=session["role"],
+    )
 
 
 @app.route("/logout")
