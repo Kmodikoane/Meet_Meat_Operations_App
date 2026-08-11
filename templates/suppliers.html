@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block title %}Supplier Relationships — Meat Meet{% endblock %}
+{% block content %}
+
+<h1 class="mm-headline" style="margin:0 0 16px 0;">SUPPLIER RELATIONSHIPS</h1>
+
+<div class="mm-metric-grid">
+    <div class="mm-metric">
+        <div class="mm-metric-label">Active Suppliers</div>
+        <div class="mm-metric-value">6</div>
+    </div>
+    <div class="mm-metric">
+        <div class="mm-metric-label">Outstanding Debt</div>
+        <div class="mm-metric-value">R0</div>
+    </div>
+    <div class="mm-metric">
+        <div class="mm-metric-label">Invoices Paid Late</div>
+        <div class="mm-metric-value">0</div>
+    </div>
+</div>
+
+{% if role == 'admin' %}
+<div class="mm-panel-admin">
+    <h3>ADMINISTRATOR CONTROLS</h3>
+    <button onclick="alert('Invoice recorded!')">Record Invoice Payment</button>
+    <button onclick="alert('Price change logged!')">Log Price Change</button>
+</div>
+{% else %}
+<p class="mm-view-only-note">
+    You have view-only access to supplier data. Invoice and payment updates
+    are managed by your Operations Administrator.
+</p>
+{% endif %}
+
+<p class="mm-view-only-note">
+    Buying frequency, rate changes, and payment-terms tracking per supplier connect in a later module.
+</p>
+
+{% endblock %}

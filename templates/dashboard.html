@@ -1,43 +1,52 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Meat Meet Dashboard</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-</head>
-<body>
-    <div class="mm-page">
-        <div class="mm-wordmark">MEAT <span>MEET</span></div>
+{% extends "base.html" %}
+{% block title %}Today — Meat Meet{% endblock %}
+{% block content %}
 
-        <div class="mm-card {% if role == 'admin' %}mm-card--admin{% endif %}" style="text-align:left;">
-            <p class="mm-body-text" style="text-align:center; margin-bottom: 4px;">Welcome back,</p>
-            <h1 class="mm-headline" style="text-align:center;">{{ display_name.upper() }}</h1>
-            <div style="text-align:center;">
-                <span class="mm-role-tag {% if role == 'admin' %}mm-role-tag--admin{% endif %}">
-                    {{ 'System Administrator' if role == 'admin' else 'Executive' }}
-                </span>
-            </div>
+<div class="mm-content-header">
+    <h1 class="mm-headline" style="margin:0;">TODAY</h1>
+    <div class="mm-clock" id="live-clock">--:--:--</div>
+</div>
 
-            <hr class="mm-divider">
+<p class="mm-body-text">Welcome back, {{ display_name }}.</p>
 
-            <p class="mm-body-text"><strong>Executive Analytics</strong> (view only)</p>
-            <p class="mm-body-text">Total Meat Sales Today: R15,400</p>
-            <p class="mm-body-text">Current Stock Level: 420 kg</p>
-
-            {% if role == 'admin' %}
-            <div class="mm-panel-admin">
-                <h3>ADMINISTRATOR CONTROLS</h3>
-                <button onclick="alert('Price updated!')">Update Meat Pricing</button>
-                <button onclick="alert('User added!')">Add New Employee</button>
-            </div>
-            {% else %}
-            <p class="mm-footnote">Administrative controls are hidden for your role.</p>
-            {% endif %}
-        </div>
-
-        <div style="margin-top: 18px;">
-            <a class="mm-btn mm-btn--red" href="{{ url_for('admin_logs') }}">View Admin Logs</a>
-            <a class="mm-btn mm-btn--outline" href="{{ url_for('logout') }}">Log Out</a>
-        </div>
+<div class="mm-metric-grid">
+    <div class="mm-metric">
+        <div class="mm-metric-label">Sales Today (so far)</div>
+        <div class="mm-metric-value">R15,400</div>
     </div>
-</body>
-</html>
+    <div class="mm-metric">
+        <div class="mm-metric-label">Sales Yesterday (final)</div>
+        <div class="mm-metric-value">R21,800</div>
+    </div>
+    <div class="mm-metric">
+        <div class="mm-metric-label">Current Stock Level</div>
+        <div class="mm-metric-value">420 kg</div>
+    </div>
+</div>
+
+{% if role == 'admin' %}
+<div class="mm-panel-admin">
+    <h3>ADMINISTRATOR CONTROLS</h3>
+    <button onclick="alert('Price updated!')">Update Meat Pricing</button>
+    <button onclick="alert('User added!')">Add New Employee</button>
+</div>
+{% endif %}
+
+<p class="mm-view-only-note">
+    Live figures shown here are placeholders — real-time sales and stock data
+    connects in a later module.
+</p>
+
+<script>
+function updateClock() {
+    const now = new Date();
+    const h = String(now.getHours()).padStart(2, '0');
+    const m = String(now.getMinutes()).padStart(2, '0');
+    const s = String(now.getSeconds()).padStart(2, '0');
+    document.getElementById('live-clock').textContent = `${h}:${m}:${s}`;
+}
+updateClock();
+setInterval(updateClock, 1000);
+</script>
+
+{% endblock %}

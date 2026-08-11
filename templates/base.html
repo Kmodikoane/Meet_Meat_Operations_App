@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{% block title %}Meat Meet{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="mm-shell">
+        <nav class="mm-sidebar">
+            <div class="mm-sidebar-logo">
+                <img src="{{ url_for('static', filename='logo.png') }}" alt="Meat Meet">
+            </div>
+
+            <ul class="mm-nav">
+                <li class="mm-nav-item {% if active_page == 'today' %}active{% endif %}">
+                    <a href="{{ url_for('dashboard') }}">Today</a>
+                </li>
+                <li class="mm-nav-item {% if active_page == 'stock' %}active{% endif %}">
+                    <a href="{{ url_for('stock') }}">Stock Level</a>
+                </li>
+                <li class="mm-nav-item {% if active_page == 'suppliers' %}active{% endif %}">
+                    <a href="{{ url_for('suppliers') }}">Supplier Relationships</a>
+                </li>
+                <li class="mm-nav-item {% if active_page == 'performance' %}active{% endif %}">
+                    <a href="{{ url_for('performance') }}">Business Pulse</a>
+                </li>
+            </ul>
+
+            <div class="mm-sidebar-footer">
+                <div class="mm-user">{{ session.display_name }} &middot; {{ 'Administrator' if session.role == 'admin' else 'Executive' }}</div>
+                <a href="{{ url_for('admin_logs') }}">Admin Logs</a>
+                <a href="{{ url_for('logout') }}">Log Out</a>
+            </div>
+        </nav>
+
+        <main class="mm-content">
+            {% block content %}{% endblock %}
+        </main>
+    </div>
+</body>
+</html>

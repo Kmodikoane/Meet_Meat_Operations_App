@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block title %}Stock Level — Meat Meet{% endblock %}
+{% block content %}
+
+<h1 class="mm-headline" style="margin:0 0 16px 0;">STOCK LEVEL</h1>
+
+<div class="mm-metric-grid">
+    <div class="mm-metric">
+        <div class="mm-metric-label">Items Running Low</div>
+        <div class="mm-metric-value">3</div>
+    </div>
+    <div class="mm-metric">
+        <div class="mm-metric-label">Next Delivery</div>
+        <div class="mm-metric-value">2 days</div>
+    </div>
+    <div class="mm-metric">
+        <div class="mm-metric-label">Open Orders</div>
+        <div class="mm-metric-value">1</div>
+    </div>
+</div>
+
+{% if role == 'admin' %}
+<div class="mm-panel-admin">
+    <h3>ADMINISTRATOR CONTROLS</h3>
+    <button onclick="alert('Order updated!')">Update Orders</button>
+    <button onclick="alert('GRV uploaded!')">Upload GRV</button>
+    <button onclick="alert('Stock take started!')">New Stock Take Report</button>
+</div>
+{% else %}
+<p class="mm-view-only-note">
+    You have view-only access to stock levels. Order updates, GRVs, and stock
+    take reports are managed by your Operations Administrator.
+</p>
+{% endif %}
+
+<p class="mm-view-only-note">Full stock-level detail and history connects in a later module.</p>
+
+{% endblock %}
