@@ -117,6 +117,26 @@ def send_login_email(to_email, first_name, token):
         print(f"  To: {to_email}")
         print(f"  Link: {link}")
         return True
+        msg = EmailMessage()
+    msg["Subject"] = "Your Meat Meet login link"
+    msg["From"] = EMAIL_ADDRESS
+    msg["To"] = to_email
+    msg.set_content(
+        f"Hi {first_name},\n\n"
+        f"Here's your login link for Meat Meet Operations:\n\n{link}\n\n"
+        f"This link works once and expires after use -- if you need another, "
+        f"request a new one from the login page.\n"
+    )
+
+    try:
+        with smtplib.SMTP_SSL("smtp.gmail.com", 465) as smtp:
+            smtp.login(EMAIL_ADDRESS, EMAIL_APP_PASSWORD)
+            smtp.send_message(msg)
+        print(f"Login email sent to {to_email}")
+        return True
+    except Exception as e:
+        print(f"Failed to send email to {to_email}: {e}")
+        return False
 
 
 def check_users():
