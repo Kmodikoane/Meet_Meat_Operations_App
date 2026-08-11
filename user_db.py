@@ -36,20 +36,36 @@ def init_db():
     connection.close()
     print("Database initialised successfully!")
 
-def add_user_interactive():
-    """Prompts for a new user's details in the terminal, then calls add_user()."""
-    print("\n--- Add New User ---")
-    username = input("Username: ").strip()
-    email = input("Email: ").strip()
-    first_name = input("First name: ").strip()
-    last_name = input("Last name: ").strip()
+def add_user(username, email, first_name, last_name, role, phone_number=None):
+    """
+    Creates a new user with a fresh, unique login token and inserts them.
+    phone_number is optional for now -- it's stored ready for WhatsApp
+    delivery once that's built, but nothing reads it yet.
+    """
+    clean_first_name = first_name.strip().title()
+    clean_last_name = last_name.strip().title()
 
-    role = input("Role (admin/exec): ").strip().lower()
-    while role not in ("admin", "exec"):
-        print("Role must be exactly 'admin' or 'exec'.")
-        role = input("Role (admin/exec): ").strip().lower()
+    token = secrets.token_urlsafe(32)
 
-    add_user(username, email, first_name, last_name, role)
+    connection = sqlite3.connect(DB_FILE)
+    cursor = connection.cursor()
+    try:
+        cursor.execute(
+            """INSERT INTO users (username, email, phone_number, first_name, last_name, role, token)
+               VALUES (?, ?, ?, ?, ?, ?, ?)""",
+            (username, email, phone_number, clean_first_name, clean_last_name, role, token),
+        )
+        connection.commit()
+        print(f"User '{username}' added successfully.")
+        print(f"  Login link token: {token}")
+        print(f"  (send them: {SITE_BASE_URL}/login/{token})")
+        return token
+    except sqlite3.IntegrityError as e:
+        print(f"Error: could not add '{username}' -- {e}")
+        return None
+    finally:
+        connection.close()
+
 
 
 def add_user(username, email, first_name, last_name, role):
