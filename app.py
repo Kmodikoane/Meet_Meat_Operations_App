@@ -91,37 +91,11 @@ def no_access():
 @app.route("/dashboard")
 @login_required
 def dashboard():
-    # Identity comes from the session (set during login), never from
-    # anything in the URL or a form field -- the session cookie is signed
-    # by Flask using SECRET_KEY, so it can't be edited by hand the way a
-    # URL parameter can.
-    display_name = session["display_name"]
-    role = session["role"]
-
-    html_content = f"""
-    <h1>Meet Meat Dashboard</h1>
-    <p>Welcome back, {display_name} ({role.upper()})</p>
-    <hr>
-    <h3>Executive Analytics (View Only)</h3>
-    <ul>
-        <li>Total Meat Sales Today: R15,400</li>
-        <li>Current Stock Level: 420 kg</li>
-    </ul>
-    """
-
-    if role == "admin":
-        html_content += """
-        <div style="background-color: #fee; padding: 15px; margin-top: 20px; border: 1px solid #f00;">
-            <h3>Administrator Controls</h3>
-            <button onclick="alert('Price updated!')">Update Meat Pricing</button>
-            <button onclick="alert('User added!')">Add New Employee</button>
-        </div>
-        """
-    else:
-        html_content += "<p><i>Note: Administrative control panel is hidden for your role.</i></p>"
-
-    html_content += '<p><a href="/logout">Log out</a></p>'
-    return html_content
+    return render_template(
+        "dashboard.html",
+        display_name=session["display_name"],
+        role=session["role"],
+    )
 
 
 @app.route("/admin-logs")
