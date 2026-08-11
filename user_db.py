@@ -103,6 +103,21 @@ def rotate_token(user_id):
     connection.close()
     return new_token
 
+def send_login_email(to_email, first_name, token):
+    """
+    Emails a fresh login link. If email credentials aren't configured yet
+    (see EMAIL_ADDRESS / EMAIL_APP_PASSWORD above), this just prints the
+    link instead -- so the rest of the login flow stays testable without
+    needing real email set up first.
+    """
+    link = f"{SITE_BASE_URL}/login/{token}"
+
+    if not EMAIL_ADDRESS or not EMAIL_APP_PASSWORD:
+        print("[Email not configured -- printing instead]")
+        print(f"  To: {to_email}")
+        print(f"  Link: {link}")
+        return True
+
 
 def check_users():
     connection = sqlite3.connect(DB_FILE)
