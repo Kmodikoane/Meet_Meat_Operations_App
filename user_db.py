@@ -103,14 +103,6 @@ def check_users():
     rows = cursor.fetchall()
 
     print("\n--- Current Users in Database ---")
-    for row in rows:
-        user_id, username, email, first_name, last_name, role, token = row
-        # Only show the first 8 characters of the token when printing --
-        # it's a credential, not something to casually paste into logs.
-        print(f"ID: {user_id} | {first_name} {last_name} ({username}) | "
-              f"{email} | role={role} | token={token[:8]}...")
-    connection.close()
-
 
 if __name__ == "__main__":
     init_db()
